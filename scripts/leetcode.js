@@ -42,7 +42,7 @@ let uploadState = { uploading: false };
 
 /* Main function for uploading code to GitHub repo, and callback cb is called if success */
 const upload = (token, hook, code, problem, filename, sha, commitMsg, cb = undefined) => {
-  const URL = `https://api.github.com/repos/${hook}/contents/${problem}/${filename}`;
+  const URL = `https://api.github.com/repos/${hook}/contents/LeetCode/${difficulty}/${problem}/${filename}`;
 
   /* Define Payload */
   let data = {
@@ -138,7 +138,7 @@ const update = (
   shouldPreprendDiscussionPosts,
   cb = undefined,
 ) => {
-  const URL = `https://api.github.com/repos/${hook}/contents/${directory}/${filename}`;
+  const URL = `https://api.github.com/repos/${hook}/contents/LeetCode/${difficulty}/${directory}/${filename}`;
 
   let options = {
     method: 'GET',
@@ -248,7 +248,7 @@ function uploadGit(
 
 /* Gets updated GitHub data for the specific file in repo in question */
 async function getUpdatedData(token, hook, directory, filename) {
-  const URL = `https://api.github.com/repos/${hook}/contents/${directory}/${filename}`;
+  const URL = `https://api.github.com/repos/${hook}/contents/LeetCode/${difficulty}/${directory}/${filename}`;
 
   let options = {
     method: 'GET',
@@ -298,8 +298,8 @@ function addLeadingZeros(title) {
   return title;
 }
 
-function formatStats(time, timePercentile, space, spacePercentile) {
-  return `Time: ${time} (${timePercentile}%), Space: ${space} (${spacePercentile}%) - LeetHub`;
+function formatStats(qid, title, difficulty, time, timePercentile, space, spacePercentile) {
+  return `[${difficulty}] Title: ${qid}.${title}, Time: ${time} (${timePercentile}%), Space: ${space} (${spacePercentile}%) - LeetHub`;
 }
 
 /* Discussion Link - When a user makes a new post, the link is prepended to the README for that problem.*/
@@ -753,6 +753,9 @@ LeetCodeV2.prototype.parseStats = function () {
     const spacePercentile =
       Math.round((this.submissionData.memoryPercentile + Number.EPSILON) * 100) / 100;
     return formatStats(
+      this.submissionData.question.questionId,
+      this.submissionData.question.titleSlug,
+      this.submissionData.question.difficulty,
       this.submissionData.runtimeDisplay,
       runtimePercentile,
       this.submissionData.memoryDisplay,
@@ -770,7 +773,7 @@ LeetCodeV2.prototype.parseStats = function () {
   const space = probStats[5];
   const spacePercentile = probStats[7];
 
-  return formatStats(time, timePercentile, space, spacePercentile);
+  return formatStats(this.submissionData.question.questionId, this.submissionData.question.titleSlug, this.submissionData.question.difficulty, time, timePercentile, space, spacePercentile);
 };
 LeetCodeV2.prototype.parseQuestion = function () {
   let markdown;
