@@ -299,7 +299,7 @@ function addLeadingZeros(title) {
 }
 
 function formatStats(qid, title, difficulty, time, timePercentile, space, spacePercentile) {
-  return `[${difficulty}] Title: ${qid}.${title}, Time: ${time} (${timePercentile}%), Space: ${space} (${spacePercentile}%) - LeetHub`;
+  return `[${difficulty}] Title: ${qid}-${title}, Time: ${time} (${timePercentile}%), Space: ${space} (${spacePercentile}%) - LeetHub`;
 }
 
 /* Discussion Link - When a user makes a new post, the link is prepended to the README for that problem.*/
